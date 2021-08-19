@@ -38,7 +38,7 @@ export class DataService {
 
   addRow(): Observable<any>{
     let mock = JSON.parse(localStorage.getItem('mock'));
-    mock.result.push({});
+    mock.result.splice(0,0,{});
     localStorage.setItem('mock', JSON.stringify(mock));
     return of(true);
   }

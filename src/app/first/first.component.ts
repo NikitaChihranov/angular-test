@@ -28,6 +28,7 @@ export class FirstComponent implements OnInit {
     this.dataService.get().subscribe((res) => {
       if (!localStorage.getItem('mock')) localStorage.setItem('mock', JSON.stringify(res));
       res.result.forEach((el) => {
+        let i = res.result.indexOf(el);
         for (const prop in el) {
           if (this.displayedColumns.indexOf(prop) === -1) this.displayedColumns.push(prop);
         }
@@ -35,8 +36,8 @@ export class FirstComponent implements OnInit {
       for (const element of res.result) {
         const groupToAdd = new FormGroup({});
         for (const col of this.displayedColumns) {
-          if (col !== 'delete') {
-            if (col !== 'eventId') {
+          if(col!== 'delete') {
+            if (!col.includes('Id')) {
               groupToAdd.addControl(col, new FormControl({value: element[col], disabled: false}));
             } else {
               groupToAdd.addControl(col, new FormControl({value: element[col], disabled: true}));
@@ -47,6 +48,7 @@ export class FirstComponent implements OnInit {
         this.values.push(groupToAdd);
       }
       this.dataSource = new MatTableDataSource(res.result);
+      console.log(this.formGroup);
       this.loading = false;
     });
   }
@@ -63,23 +65,18 @@ export class FirstComponent implements OnInit {
   }
 
   editElement(i: number) {
-    this.dataService.update(i, this.formGroup.value.values[i]).subscribe(() => {
-    })
+    this.dataService.update(i,  this.formGroup.value.values[i]).subscribe(() => {})
   }
 
-  addRow() {
+  addRow(){
     this.dataService.addRow().subscribe(() => {
-      const obj = {};
-      for (const col of this.displayedColumns) {
-        obj[col] = '';
-      }
-      this.dataSource.data.push(obj);
+      this.dataSource.data.splice(0,0,{});
       this.dataSource._updateChangeSubscription();
 
       const groupToAdd = new FormGroup({});
       for (const col of this.displayedColumns) {
-        if (col !== 'delete') {
-          if (col !== 'eventId') {
+        if(col!== 'delete') {
+          if (!col.includes('Id')) {
             groupToAdd.addControl(col, new FormControl({value: '', disabled: false}));
           } else {
             groupToAdd.addControl(col, new FormControl({value: '', disabled: true}));
@@ -87,7 +84,8 @@ export class FirstComponent implements OnInit {
           }
         }
       }
-      this.values.push(groupToAdd);
+      this.values.insert(0, groupToAdd);
+      console.log(this.values);
     });
   }
 }
