@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: FirstComponent
-  },
-  {
-    path: 'test-angular',
-    component: FirstComponent
   }
 ];
 

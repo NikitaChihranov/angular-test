@@ -12,7 +12,7 @@ export class DataService {
 
   get(): Observable<any> {
     if (!localStorage.getItem('mock')) {
-      return this.http.get('../assets/exam.json');
+      return this.http.get('../angular-test/assets/exam.json');
     } else {
       return of(JSON.parse(localStorage.getItem('mock')));
     }
