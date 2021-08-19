@@ -1,0 +1,9 @@
+th, td{
+  min-width: 100px;
+}
+table{
+  width: 100%;
+}
+mat-form-field{
+  width: 90%;
+}
